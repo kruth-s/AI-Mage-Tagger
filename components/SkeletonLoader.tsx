@@ -1,18 +1,28 @@
 import React from 'react';
 
 export const SkeletonLoader: React.FC = () => {
+  const ShimmerDiv: React.FC<{className: string}> = ({ className }) => (
+    <div className={`${className} bg-base-300/50 animate-shimmer bg-gradient-to-r from-base-300/50 via-base-200/50 to-base-300/50`} style={{ backgroundSize: '200% 100%' }}></div>
+  );
+
   return (
-    <div className="w-full h-full animate-fade-in text-left">
+    <div className="w-full h-full text-left">
+        {/* Caption Skeletons */}
+        <div className="mb-4">
+            <ShimmerDiv className="h-4 w-1/3 rounded-md mb-2" />
+            <ShimmerDiv className="h-10 w-full rounded-lg" />
+        </div>
         <div className="mb-6">
-            <div className="h-5 w-1/3 bg-base-300 rounded-md mb-3 animate-shimmer bg-gradient-to-r from-base-300 via-base-200 to-base-300" style={{ backgroundSize: '200% 100%' }}></div>
-            <div className="h-16 w-full bg-base-100 rounded-lg animate-shimmer bg-gradient-to-r from-base-100 via-base-200 to-base-100" style={{ backgroundSize: '200% 100%' }}></div>
+            <ShimmerDiv className="h-4 w-1/3 rounded-md mb-2" />
+            <ShimmerDiv className="h-12 w-full rounded-lg" />
         </div>
 
+        {/* Tags Skeleton */}
         <div>
-            <div className="h-5 w-1/2 bg-base-300 rounded-md mb-4 animate-shimmer bg-gradient-to-r from-base-300 via-base-200 to-base-300" style={{ backgroundSize: '200% 100%' }}></div>
+            <ShimmerDiv className="h-4 w-1/2 rounded-md mb-4" />
             <div className="flex flex-wrap gap-2">
-                {[...Array(8)].map((_, i) => (
-                    <div key={i} className="h-8 w-24 bg-base-300 rounded-full animate-shimmer bg-gradient-to-r from-base-300 via-base-200 to-base-300" style={{ backgroundSize: '200% 100%' }}></div>
+                {[...Array(7)].map((_, i) => (
+                    <ShimmerDiv key={i} className="h-8 w-24 rounded-full" />
                 ))}
             </div>
         </div>

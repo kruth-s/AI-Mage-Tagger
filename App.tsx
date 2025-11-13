@@ -1,18 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { Header } from './components/Header';
-import { WelcomeMessage } from './components/WelcomeMessage';
-import { ToolSelector } from './components/ToolSelector';
 import { ImageUploader } from './components/ImageUploader';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { SkeletonLoader } from './components/SkeletonLoader';
 import { ErrorMessage } from './components/ErrorMessage';
-import { InitialResultsMessage } from './components/InitialResultsMessage';
-import { KeyFeatures } from './components/KeyFeatures';
-import { HowToUse } from './components/HowToUse';
-import { ProTips } from './components/ProTips';
-import { CallToAction } from './components/CallToAction';
-import { Footer } from './components/Footer';
-import { generateImageTags } from './services/geminiService';
+import { generateImageAnalysis } from './services/geminiService';
 import { ImageAnalysisResult, InlineData } from './types';
 
 const App: React.FC = () => {
@@ -27,7 +19,7 @@ const App: React.FC = () => {
     setAnalysisResult(null);
 
     try {
-      const result = await generateImageTags(imageData);
+      const result = await generateImageAnalysis(imageData);
       setAnalysisResult(result);
     } catch (err) {
       console.error(err);
@@ -43,43 +35,38 @@ const App: React.FC = () => {
     setError(null);
     setIsLoading(false);
   };
+  
+  const hasContent = isLoading || error || analysisResult;
 
   return (
-    <div className="min-h-screen flex flex-col bg-base-100 font-sans">
+    <div className="min-h-screen flex flex-col bg-base-100 font-sans text-content-100">
       <Header />
-      <main className="flex-grow container mx-auto p-4 md:p-8 w-full">
-        <WelcomeMessage />
-        <ToolSelector />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8 max-w-7xl mx-auto">
-          <div className="bg-base-200 p-6 rounded-xl shadow-sm border border-base-300">
-            <ImageUploader 
-              onImageReady={handleImageAnalysis} 
-              setImagePreview={setImagePreview}
-              isLoading={isLoading}
-              onReset={handleReset}
-              imagePreview={imagePreview}
-            />
-          </div>
-
-          <div className="bg-base-200 p-6 rounded-xl shadow-sm border border-base-300 flex flex-col min-h-[500px]">
-            <h2 className="text-xl font-semibold mb-4 text-content-100 pb-2">Results</h2>
-            <div className="flex-grow flex items-center justify-center">
-              {isLoading && <SkeletonLoader />}
-              {error && <ErrorMessage message={error} />}
-              {!isLoading && !error && !analysisResult && <InitialResultsMessage />}
-              {!isLoading && !error && analysisResult && <ResultsDisplay result={analysisResult} />}
+      <main className="flex-grow flex flex-col items-center justify-center container mx-auto p-4 md:p-8 w-full">
+        <div className={`w-full max-w-7xl mx-auto transition-all duration-500 ${hasContent ? ' ' : 'max-w-3xl'}`}>
+          <div className={`grid grid-cols-1 gap-8 ${hasContent ? 'lg:grid-cols-2' : ''}`}>
+            <div className="bg-base-200/50 p-6 rounded-xl shadow-lg border border-base-300">
+              <ImageUploader 
+                onImageReady={handleImageAnalysis} 
+                setImagePreview={setImagePreview}
+                isLoading={isLoading}
+                onReset={handleReset}
+                imagePreview={imagePreview}
+              />
             </div>
+            
+            {hasContent && (
+              <div className="bg-base-200/50 p-6 rounded-xl shadow-lg border border-base-300 flex flex-col min-h-[500px]">
+                <h2 className="text-xl font-semibold mb-4 text-content-100 pb-2 border-b border-base-300">Results</h2>
+                <div className="flex-grow flex items-center justify-center animate-fade-in">
+                  {isLoading && <SkeletonLoader />}
+                  {error && <ErrorMessage message={error} />}
+                  {!isLoading && !error && analysisResult && <ResultsDisplay result={analysisResult} />}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        
-        <KeyFeatures />
-        <HowToUse />
-        <ProTips />
-        <CallToAction />
-
       </main>
-      <Footer />
     </div>
   );
 };

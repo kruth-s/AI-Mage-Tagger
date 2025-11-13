@@ -99,6 +99,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageReady, setI
     
     return () => {
       window.removeEventListener('dragover', handleDragOver);
+      // Fix: Corrected typo from `handleLeave` to `handleDragLeave`.
       window.removeEventListener('dragleave', handleDragLeave);
       window.removeEventListener('drop', handleDrop);
     };
@@ -119,20 +120,20 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageReady, setI
   }, [handleFile, isLoading, imagePreview]);
 
   const UploadIcon = () => (
-    <svg className="mx-auto h-12 w-12 text-blue-500" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+    <svg className="mx-auto h-12 w-12 text-brand-secondary" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-[450px]">
       <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-content-100">Upload Image</h2>
            {imagePreview && (
               <button 
                 onClick={handleInternalReset}
                 disabled={isLoading}
-                className="text-sm font-medium text-red-600 hover:text-red-800 disabled:opacity-50"
+                className="text-sm font-medium text-red-400 hover:text-red-300 disabled:opacity-50"
               >
                 Remove
               </button>
@@ -141,7 +142,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageReady, setI
 
       <div 
         onClick={imagePreview ? undefined : handleUploadClick}
-        className={`flex-grow border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-4 transition-colors duration-300 ${isDragging ? 'border-brand-primary bg-brand-primary/10' : 'border-base-300'} ${!imagePreview && 'cursor-pointer'}`}
+        className={`flex-grow border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-4 transition-colors duration-300 ${isDragging ? 'border-brand-primary bg-brand-primary/10' : 'border-base-300'} ${!imagePreview && 'cursor-pointer hover:border-brand-secondary'}`}
       >
         {imagePreview ? (
           <div className="relative w-full h-full max-h-[400px]">

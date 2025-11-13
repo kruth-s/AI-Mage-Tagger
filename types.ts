@@ -1,7 +1,11 @@
-
 export interface ImageAnalysisResult {
   caption: string;
-  tags: string[];
+  short_caption: string;
+  tags_extracted: string[];
+  final_tags: {
+    tag: string;
+    score: number;
+  }[];
 }
 
 export interface InlineData {

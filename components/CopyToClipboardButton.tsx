@@ -37,7 +37,7 @@ export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({ te
       onClick={handleCopy}
       className={`flex items-center text-sm font-medium transition-colors duration-200 rounded-md px-2 py-1 ${
         isCopied
-          ? 'text-green-600 bg-green-100'
+          ? 'text-green-400 bg-green-500/20'
           : 'text-content-300 hover:text-content-100 hover:bg-base-300'
       }`}
       disabled={isCopied}
